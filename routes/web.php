@@ -17,4 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::view("/","login");
+Route::view("/login","login");
+
+Route::post("/login", "UserController@login");
+Route::get("/", "ProductController@index");

@@ -1,1 +1,3 @@
-<h2>footer</h2>
+<div class="panel panel-default">
+  <div class="panel-footer">All rights reserved &copy;lara-ecom </div>
+</div>
