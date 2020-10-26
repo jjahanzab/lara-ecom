@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Cart;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return "wellcom to product page";
+        $product['products'] = Product::all();
+        return view('products', $product);
     }
 
     /**
@@ -44,9 +46,36 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product['product'] = Product::where('id', $id)->first();
+        return view('product', $product);
+    }
+
+    public function search(Request $request)
+    {
+        $product['products'] = Product::where('name', 'like', '%'.$request->input('search').'%')->get();
+        return view('search', $product);
+    }
+
+    public function AddToCart(Request $request)
+    {
+        if ($request->session()->has('user')) {
+            $cart = new Cart;
+            $cart->user_id = $request->session()->get('user')['id'];
+            $cart->product_id = $request->product_id;
+            $cart->save();
+            return redirect('/');
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public static function cartItems($id)
+    {
+        $total = 0;
+        $total = Cart::where('user_id', $id)->count();
+        return $total;
     }
 
     /**

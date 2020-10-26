@@ -1,4 +1,20 @@
 
+  <style>
+    .search-box {
+      width: 400px !important;
+    }
+  </style>
+    
+  @php
+    use App\Http\Controllers\ProductController;
+    $total = 0;
+    if(Session::has('user'))
+    {
+      $id = Session::get('user')['id'];
+      $total = ProductController::cartItems($id);
+    }
+  @endphp
+
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -9,24 +25,34 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Brand</a>
+        <a class="navbar-brand" href="{{url('/')}}">E-Com</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+          <li class="active"><a href="{{url('/')}}">Home <span class="sr-only">(current)</span></a></li>
           <li><a href="#">Orders</a></li>
         </ul>
-        <form class="navbar-form navbar-left">
+        <form action="{{ url('/search') }}" method="GET" class="navbar-form navbar-left">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
+            <input type="text" name="search" class="form-control search-box" placeholder="Search">
           </div>
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="submit" class="btn btn-default">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Add to Cart</a></li>
+          <li><a href="#">Add to Cart <span>({{ $total }})</span></a></li>
+          @if(Session::has('user'))
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Session::get('user')['name'] }} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ url('logout') }}">Logout</a></li>
+              </ul>
+            </li>
+          @else
+            <li><a href="{{ url('login') }}">Login</a></li>
+          @endif
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-  </nav>
+  </nav> 

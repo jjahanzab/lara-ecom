@@ -20,4 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::view("/login","login");
 
 Route::post("/login", "UserController@login");
+Route::get("/logout", "UserController@logout");
 Route::get("/", "ProductController@index");
+Route::get("/product/{term}", "ProductController@show")->name('product');
+Route::get("/search", "ProductController@search");
+Route::post("/cart", "ProductController@AddToCart");
