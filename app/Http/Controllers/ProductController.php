@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -24,10 +26,16 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function cartList()
     {
-        //
-    }
+        $id = Session::get('user')['id']; 
+        $product['products'] = DB::table('carts')
+        ->join('products', 'carts.product_id','products.id')
+        ->select('products.*')
+        ->where('carts.user_id',$id)
+        ->get();
+        return view('cartlist', $product);
+    }   
 
     /**
      * Store a newly created resource in storage.

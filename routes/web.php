@@ -25,3 +25,4 @@ Route::get("/", "ProductController@index");
 Route::get("/product/{term}", "ProductController@show")->name('product');
 Route::get("/search", "ProductController@search");
 Route::post("/cart", "ProductController@AddToCart");
+Route::get("/list", "ProductController@cartList");
